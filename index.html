@@ -1,0 +1,53 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script>
+        function tlCevir(sayi)
+        {
+            rakam = sayi.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".").split(",");
+            tamsayi = rakam[0];
+            ondalik = rakam[1]||"";
+
+
+
+            var birler = ["","BİR","İKİ","ÜÇ","DÖRT","BEŞ","ALTI","YEDİ","SEKİZ","DOKUZ"];
+            var onlar = ["","ON","YİRMİ","OTUZ","KIRK","ELLİ","ALTMIŞ","YETMİŞ","SEKSEN","DOKSAN"];
+            var binler = ["","BİN","MİLYON","MİLYAR","TRİLYON","KATRİLYON","KENTİLYON"];
+            var sonuc = [];
+
+            var adim = 0;
+            for(i=tamsayi.split(".").length;i>0;i--)
+            {
+                sayi = tamsayi.split(".")[i-1];
+                if(sayi.length==1){ sayi="00"+sayi; }
+                if(sayi.length==2){ sayi="0"+sayi; }
+                c="";
+
+                for(j=1;j<sayi.length+1;j++)
+                {
+                    if(j==1 && sayi[j-1]==1){ c+= " YÜZ "; }
+                    else if(j==1 && birler[sayi[j-1]]!=""){ c+= birler[sayi[j-1]]+" YÜZ "; }
+                    else if(j==2){ c+= onlar[sayi[j-1]]+" "; }
+                    else if(j==3 && tamsayi.length==5 && sayi[j-1]==1 && adim==1){ c+= " "; }
+                    else if(j==3){ c+= birler[sayi[j-1]]+" "; }
+                }
+
+                if(c!=""){ sonuc.push(c+binler[adim]); }
+                adim++;
+            }
+
+            if(sonuc.length!=0){ sonuc = sonuc.reverse().join(" ")+" TL"; }else{ sonuc=""; }
+            if(ondalik.length==1){ ondalik=ondalik+"0"; }
+            if(ondalik!=""){
+                sonuc += " "+onlar[ondalik[0]]+" "+birler[ondalik[1]]+ " KR";
+            }
+
+            sonuc = sonuc.replace(/ /g," ").trim();
+
+            return sonuc;
+        }
+
+        alert(tlCevir("123.456,78"));
+    </script>
+</head>
+</html>
